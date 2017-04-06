@@ -1,9 +1,18 @@
 import glob, re, os
 
-lokasi = "/sdcard/Download/baca manga/"
+tanya = """Di manakah Anda akan menampilkan manga ini?
+
+1. Android
+2. Windows
+
+Jawaban (1/2): """
+tanya = raw_input(tanya)
+
+lokasi = ""
 buatfile = []
 filehtml = []
 nyarigambar = []
+enter = "\n"
 css = """<style>
 img {
 	display: none;
@@ -24,7 +33,10 @@ folder = glob.glob(lokasi+"*/")
 
 for x in folder:
     x = re.sub(r""+lokasi, r"hdhsbbshs", x)
-    x = re.sub(r"/", r".html", x)
+    if tanya == "1":
+    	x = re.sub(r"/", r".html", x)
+    elif tanya == "2":
+    	x = re.sub(r"\\", r".html", x)
     x = re.sub(r"hdhsbbshs", r""+lokasi, x)
     buatfile.append(x)
 
@@ -38,9 +50,16 @@ for n, x in enumerate(folder):
     
 for n, x in enumerate(filehtml):
     x.write(css)
-    x.write("<body onclick='document.body.webkitRequestFullScreen()' style='position: fixed; width: 100%; height: 100%; overflow: auto;'>")
+    if tanya == "1":
+    	x.write("<body onclick='document.body.webkitRequestFullScreen()' style='position: fixed; width: 100%; height: 100%; overflow: auto;'>")
+    elif tanya == "2":
+    	x.write("<body>")
+    x.write(enter)
     x.write("<center>")
+    x.write(enter)
     for q in nyarigambar[n]:
         x.write("<img src='"+q+"'/>")
+        x.write(enter)
     x.write("</center>")
+    x.write(enter)
     x.write("</body>")
